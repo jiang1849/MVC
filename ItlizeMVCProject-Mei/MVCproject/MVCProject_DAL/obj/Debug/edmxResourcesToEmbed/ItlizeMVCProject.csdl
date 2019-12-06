@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ItlizeMVCProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="SubCategories" Relationship="Self.FK__SubCatego__Categ__403A8C7D" FromRole="Category" ToRole="SubCategory" />
+  </EntityType>
+  <EntityType Name="Login">
+    <Key>
+      <PropertyRef Name="Email" />
+    </Key>
+    <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ID" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Login__ID__398D8EEE" FromRole="Login" ToRole="User" />
+  </EntityType>
+  <EntityType Name="ProductList">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SubcategoryID" Type="Int32" />
+    <Property Name="ProductImage" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SubCategory" Relationship="Self.FK__ProductLi__Subca__4E88ABD4" FromRole="ProductLists" ToRole="SubCategory" />
+    <NavigationProperty Name="ProductProperties" Relationship="Self.FK__ProductPr__Produ__5070F446" FromRole="ProductLists" ToRole="ProductProperty" />
+  </EntityType>
+  <EntityType Name="ProductProperty">
+    <Key>
+      <PropertyRef Name="ProductID" />
+      <PropertyRef Name="PropertyID" />
+    </Key>
+    <Property Name="ProductID" Type="Int32" Nullable="false" />
+    <Property Name="PropertyID" Type="Int32" Nullable="false" />
+    <Property Name="PropertyValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ProductList" Relationship="Self.FK__ProductPr__Produ__5070F446" FromRole="ProductProperty" ToRole="ProductLists" />
+    <NavigationProperty Name="Property" Relationship="Self.FK__ProductPr__Prope__5165187F" FromRole="ProductProperty" ToRole="Property" />
+  </EntityType>
+  <EntityType Name="Property">
+    <Key>
+      <PropertyRef Name="PropertyID" />
+    </Key>
+    <Property Name="PropertyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PropertyName" Type="String" MaxLength="259" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="ProductProperties" Relationship="Self.FK__ProductPr__Prope__5165187F" FromRole="Property" ToRole="ProductProperty" />
+  </EntityType>
+  <EntityType Name="SubCategory">
+    <Key>
+      <PropertyRef Name="SubCategoryID" />
+    </Key>
+    <Property Name="SubCategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SubCategoryName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CategoryID" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__SubCatego__Categ__403A8C7D" FromRole="SubCategory" ToRole="Category" />
+    <NavigationProperty Name="ProductLists" Relationship="Self.FK__ProductLi__Subca__4E88ABD4" FromRole="SubCategory" ToRole="ProductLists" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Logins" Relationship="Self.FK__Login__ID__398D8EEE" FromRole="User" ToRole="Login" />
+  </EntityType>
+  <Association Name="FK__SubCatego__Categ__403A8C7D">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="SubCategory">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Login__ID__398D8EEE">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Login" Type="Self.Login" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Login">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductLi__Subca__4E88ABD4">
+    <End Role="SubCategory" Type="Self.SubCategory" Multiplicity="0..1" />
+    <End Role="ProductLists" Type="Self.ProductList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubCategory">
+        <PropertyRef Name="SubCategoryID" />
+      </Principal>
+      <Dependent Role="ProductLists">
+        <PropertyRef Name="SubcategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductPr__Produ__5070F446">
+    <End Role="ProductLists" Type="Self.ProductList" Multiplicity="1" />
+    <End Role="ProductProperty" Type="Self.ProductProperty" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductLists">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="ProductProperty">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__ProductPr__Prope__5165187F">
+    <End Role="Property" Type="Self.Property" Multiplicity="1" />
+    <End Role="ProductProperty" Type="Self.ProductProperty" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Property">
+        <PropertyRef Name="PropertyID" />
+      </Principal>
+      <Dependent Role="ProductProperty">
+        <PropertyRef Name="PropertyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ItlizeMVCProjectEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Logins" EntityType="Self.Login" />
+    <EntitySet Name="ProductLists" EntityType="Self.ProductList" />
+    <EntitySet Name="ProductProperties" EntityType="Self.ProductProperty" />
+    <EntitySet Name="Properties" EntityType="Self.Property" />
+    <EntitySet Name="SubCategories" EntityType="Self.SubCategory" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK__SubCatego__Categ__403A8C7D" Association="Self.FK__SubCatego__Categ__403A8C7D">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="SubCategory" EntitySet="SubCategories" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Login__ID__398D8EEE" Association="Self.FK__Login__ID__398D8EEE">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Login" EntitySet="Logins" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductLi__Subca__4E88ABD4" Association="Self.FK__ProductLi__Subca__4E88ABD4">
+      <End Role="SubCategory" EntitySet="SubCategories" />
+      <End Role="ProductLists" EntitySet="ProductLists" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductPr__Produ__5070F446" Association="Self.FK__ProductPr__Produ__5070F446">
+      <End Role="ProductLists" EntitySet="ProductLists" />
+      <End Role="ProductProperty" EntitySet="ProductProperties" />
+    </AssociationSet>
+    <AssociationSet Name="FK__ProductPr__Prope__5165187F" Association="Self.FK__ProductPr__Prope__5165187F">
+      <End Role="Property" EntitySet="Properties" />
+      <End Role="ProductProperty" EntitySet="ProductProperties" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

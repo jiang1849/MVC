@@ -1,0 +1,12 @@
+﻿@model  MVCproject.Models.UserLogin
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+<form action="submit" method="post">
+    Email:@Html.EditorFor(model=>model.Email)
+    Password:@Html.EditorFor(model=>model.Password)
+    <input id="Submit1" type="Submit" value="Submit" />
+</form>
+
